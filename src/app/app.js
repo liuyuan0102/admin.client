@@ -10,6 +10,7 @@ require('angular-translate');
 require('angular-validation');
 require('angular-block-ui');
 require('ng-table');
+require('ng-file-upload');
 require('ng-csv');
 
 // app modules
@@ -33,6 +34,7 @@ const requires = [
 	'validation',
 	'blockUI',
 	'ngTable',
+	'ngFileUpload',
 	'ngCsv',
 	'templates',
 	'app.constants',

@@ -150,8 +150,7 @@ gulp.task('lib', function() {
             overrides: {
                 plupload: {
                     main: [
-                        './js/plupload.dev.js',
-                        './js/moxie.js'
+                       
                     ]
                 }
             }

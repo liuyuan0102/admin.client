@@ -33,8 +33,14 @@
                 <div class="form-group">
                     <label for="mail" class="control-label col-md-3 col-sm-3 col-xs-12">头像：</label>
                     <div class="col-sm-9 col-xs-12">
-                        <button id="upload-btn" type="button" class="btn btn-info x_btn" ng-click="vm.upload()">上传</button>
-                        <img class="img-thumbnail" ng-src="{{vm.uploader.getFile()}}?imageView2/2/w/150" />
+                    	 <button class="btn btn-default" ngf-select="selectImage($files)" ngf-pattern="'image/*'"
+							        ngf-multiple="true">
+							    选择图片
+							</button>
+						   <button id="upload-btn" type="button" class="btn btn-info x_btn"  ng-click="vm.upload()">上传</button>
+						   
+                        <!--<button id="upload-btn" type="button" class="btn btn-info x_btn" ng-click="vm.upload()">上传</button>-->
+                        <!--<img class="img-thumbnail" ng-src="{{vm.uploader.getFile()}}?imageView2/2/w/150" />-->
                     </div>
                 </div>                
                 <div class="ln_solid"></div>
