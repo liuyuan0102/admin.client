@@ -3,15 +3,15 @@
  */
 'use strict';
 
-function UserNewCtrl($controller, UploadSrv) {
+function UserNewCtrl($scope,$controller, UploadSrv) {
     'ngInject';
 
     let vm = this;
     let uploader;
 
     function beforeSave() {
-        let photo = uploader.getFile() || null;
-        vm.model.photo = photo;
+        let photo = UploadSrv.createUploader(null,$scope.file[0]) || null;
+        vm.model.image = photo;
     }
     
     let ctrlOpts = {
@@ -22,8 +22,8 @@ function UserNewCtrl($controller, UploadSrv) {
 
 
     // 上传组件
-    uploader = UploadSrv.createImageUploader();
-    vm.uploader = uploader;
+    //uploader = UploadSrv.createUploader();
+    //vm.uploader = uploader;
 }
 
 module.exports = {
