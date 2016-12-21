@@ -3,7 +3,7 @@
 let _ = require('lodash');
 
 var OSS = require('ali-oss');
-var co = require('co');
+//var co = require('co');
 
 /**
  * 上传服务
@@ -13,57 +13,45 @@ var co = require('co');
  */
 function UploadSrv($rootScope, $http, ApiSrv) {
 	'ngInject';
+	var urllib = OSS.urllib;
+	var para;
+	$http({
+		method: 'GET',
+		url: 'http://localhost:8080/admin.server-master/api/upload/para',
+		params: {}
+	}).success(function(result) {
+		para = result;
+	});
 
-	/**
-	 * 创建上传组件
-	 * @param  {Object} opts [参考plupload的上传opts]
-	 * @return {uploader}      [参考七牛的uploader]
-	 */
-	function createUploader(opts,fi) {
-        $http({
-			method: 'POST',
-			url: 'http://localhost:8080/admin.server-master/api/upload/para',
-			params: {}
-		}).then(function(result) {
-			upload(fi,result.data) 
-		});
+	function getUrl(fileName) {
+		return para.baseUrl + "/" + para.filedir + '/' + fileName;
 	}
 
-	function upload(fi,data) {
-//          var client = new OSS.Wrapper({
-//	    			region : data.region,
-//	    			accessKeyId : data.accessKeyId,
-//	    			accessKeySecret : data.accessKeySecret,
-//	    			bucket : data.bucketName
-//	    		});
-		var client = new OSS({
-		      region: 'oss-cn-shanghai',
-		      accessKeyId: 'LTAIoQvX3l5qUYZe',
-		      accessKeySecret:	'MON0M3d8ppjGtVkcX5IpYobjSe8pSd',
-		    
-		      bucket: 'liuy010202'
-		    });
-	    	var storeAs = 'upload/'+fi.name;  //命名空间
-			var progress = function (p) {
-			  return function (done) {
-			    var bar = document.getElementById('progress-bar');
-			    bar.style.width = Math.floor(p * 100) + '%';
-			    bar.innerHTML = Math.floor(p * 100) + '%';
-			    done();
-			  }
-			};
-			client.multipartUpload(storeAs, fi).success(function (result) {
-				return result.url; 
-	    	}).catch(function (err) {
-	    		return err;
-	    	});   
-        }
+	function upload(opt, fi) {
+		if(!fi) {
+			return null;
+		}
+
+		var client = new OSS.Wrapper({
+			region: para.region,
+			accessKeyId: para.accessKeyId,
+			accessKeySecret: para.accessKeySecret,
+			bucket: para.bucketName,
+		});
+		var storeAs = para.filedir + '/' + fi.name; //命名空间
+
+		client.multipartUpload(storeAs, fi).then(function(result) {
+			return result.url;
+		}).catch(function(err) {
+			return err;
+		});
+
+	}
 	return {
-		createUploader
+		upload,
+		getUrl
 	};
-	
-	
-	
+
 }
 
 module.exports = {

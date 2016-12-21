@@ -7,23 +7,16 @@ function UserNewCtrl($scope,$controller, UploadSrv) {
     'ngInject';
 
     let vm = this;
-    let uploader;
-
+    var opt= {};
     function beforeSave() {
-        let photo = UploadSrv.createUploader(null,$scope.file[0]) || null;
-        vm.model.image = photo;
+        let photo = UploadSrv.upload(opt,$scope.file[0]) || null;
+        vm.model.image = UploadSrv.getUrl($scope.file[0].name);
     }
-    
     let ctrlOpts = {
             modelName: 'user',
             beforeSave
         };
     angular.extend(this, $controller('BaseCrudCtrl', { vm: vm, ctrlOpts }));
-
-
-    // 上传组件
-    //uploader = UploadSrv.createUploader();
-    //vm.uploader = uploader;
 }
 
 module.exports = {
